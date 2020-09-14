@@ -1,7 +1,8 @@
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { optimize } = require('webpack');
-const { join } = require('path');
+const { join, resolve } = require('path');
+
 let prodPlugins = [];
 if (process.env.NODE_ENV === 'production') {
     prodPlugins.push(
@@ -10,6 +11,12 @@ if (process.env.NODE_ENV === 'production') {
     );
 }
 module.exports = {
+    stats: {
+        logging: "verbose",
+        loggingDebug: true,
+        loggingTrace: true,
+        reasons: true
+    },
     mode: process.env.NODE_ENV,
     devtool: 'inline-source-map',
     entry: {
@@ -23,12 +30,15 @@ module.exports = {
     module: {
         rules: [
             {
-                exclude: /node_modules/,
                 test: /\.ts?$/,
+                exclude: /node_modules/,
                 use: 'awesome-typescript-loader?{configFileName: "tsconfig.json"}',
             },
             {
                 test: /\.scss$/,
+                include: [
+                  resolve(__dirname, 'src/contentscript')
+                ],
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
             },
         ],
@@ -39,6 +49,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[id].css',
+            debug: true
         }),
     ],
     resolve: {
