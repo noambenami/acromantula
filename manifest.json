@@ -3,7 +3,7 @@
   "name": "Affirm Acromantula",
   "version": "1.0.0",
   "permissions": [
-    "activeTab",
+    "storage",
     "https://confluence.team.affirm.com/*",
     "https://docs.google.com/document/*"
   ],
@@ -11,7 +11,10 @@
     {
       "js": ["contentscript.js"],
       "css": ["contentscript.css"],
-      "matches": ["<all_urls>"]
+      "matches": [
+        "https://confluence.team.affirm.com/*",
+        "https://docs.google.com/document/*"
+      ]
     }
   ],
   "background": {
